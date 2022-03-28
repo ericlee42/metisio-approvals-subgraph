@@ -1,0 +1,17 @@
+{
+  "name": "metis-approvals-subgraph",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "rm -rf src/generated && graph codegen -o src/generated",
+    "prebuild": "yarn codegen",
+    "build": "rm -rf build && graph build",
+    "postinstall": "yarn build",
+    "create-local": "graph create --node http://localhost:8020/ metisio/approvals",
+    "remove-local": "graph remove --node http://localhost:8020/ metisio/approvals",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 metisio/approvals"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.28.1",
+    "@graphprotocol/graph-ts": "0.26.0"
+  }
+}

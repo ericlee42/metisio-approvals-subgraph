@@ -1,0 +1,53 @@
+version: '3'
+services:
+  graph-node:
+    image: graphprotocol/graph-node:v0.25.2
+    container_name: graph-node
+    ports:
+      - '8000:8000' # http graphql
+      - '8001:8001' # websocket graphql
+      - '8020:8020' # jsonrpc
+      - '8030:8030' # index node
+      - '8040:8040' # metrics server
+    depends_on:
+      - ipfs
+      - postgres
+    environment:
+      postgres_host: postgres
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: 'ipfs:5001'
+      ethereum: 'andromeda:https://andromeda.metis.io/?owner=1088'
+      GRAPH_LOG: info
+  ipfs:
+    image: ipfs/go-ipfs:v0.12.1
+    container_name: graph-ipfs
+    ports:
+      # Swarm
+      # - 4001:4001/tcp
+      # - 4001:4001/udp
+      - 5001:5001 # api
+      - 8080:8080 # api gateway
+    volumes:
+      - ipfs:/data/ipfs
+  postgres:
+    image: postgres
+    container_name: graph-postgres
+    ports:
+      - '5432:5432'
+    command:
+      [
+        "postgres",
+        "-cshared_preload_libraries=pg_stat_statements"
+      ]
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:
+  ipfs:

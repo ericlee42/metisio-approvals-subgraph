@@ -1,0 +1,47 @@
+specVersion: 0.0.2
+description: Token approve list
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ERC20Approve
+    network: andromeda
+    source:
+      abi: ERC20
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - Approved
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleERC20Approval
+      file: ./src/ERC20.ts
+  - kind: ethereum
+    name: ERC721Approve
+    network: andromeda
+    source:
+      abi: ERC721
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - Approved
+      abis:
+        - name: ERC721
+          file: ./abis/ERC721.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleERC721Approval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+      file: ./src/ERC721.ts

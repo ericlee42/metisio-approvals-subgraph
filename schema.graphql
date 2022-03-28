@@ -1,0 +1,22 @@
+enum TokenType {
+  ERC20
+  ERC721
+  ERC1155
+}
+
+type Token @entity {
+  "token address"
+  id: ID!
+  symbol: String!
+  type: TokenType!
+}
+
+type Approved @entity {
+  id: ID!
+  token: Token!
+  owner: Bytes!
+  spender: Bytes!
+  Amouont: BigInt!
+  IsAll: Boolean!
+  UpdatedAt: BigInt!
+}
