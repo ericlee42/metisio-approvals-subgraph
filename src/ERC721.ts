@@ -1,9 +1,5 @@
 import { BigInt, store, log } from "@graphprotocol/graph-ts";
-import {
-  ERC721,
-  Approval,
-  ApprovalForAll,
-} from "./generated/ERC721Approve/ERC721";
+import { ERC721, Approval, ApprovalForAll } from "./generated/ERC721Approve/ERC721";
 import { Token, Approved } from "./generated/schema";
 
 export function handleERC721Approval(event: Approval): void {
@@ -23,16 +19,13 @@ export function handleERC721Approval(event: Approval): void {
     token.save();
   }
 
-  const approveId = `ERC721Approve-${event.address.toHex()}-${
-    event.params.owner
-  }-${event.params.tokenId}`;
+  const approveId = `ERC721Approve-${event.address.toHex()}-${event.params.owner}-${
+    event.params.tokenId
+  }`;
 
   let approve = Approved.load(approveId);
 
-  if (
-    event.params.approved.toString() ===
-    "0x0000000000000000000000000000000000000000"
-  ) {
+  if (event.params.approved.toString() === "0x0000000000000000000000000000000000000000") {
     if (approve) {
       store.remove("Approved", approveId);
     }
@@ -47,7 +40,7 @@ export function handleERC721Approval(event: Approval): void {
     approve.IsAll = false;
   }
 
-  approve.Amouont = event.params.tokenId;
+  approve.Amount = event.params.tokenId;
   approve.UpdatedAt = event.block.timestamp;
   approve.save();
 }
@@ -67,9 +60,9 @@ export function handleApprovalForAll(event: ApprovalForAll): void {
     token.save();
   }
 
-  const approveId = `ERC721Approve-${event.address.toHex()}-${
-    event.params.owner
-  }-${event.params.operator}`;
+  const approveId = `ERC721Approve-${event.address.toHex()}-${event.params.owner}-${
+    event.params.operator
+  }`;
 
   let approve = Approved.load(approveId);
   if (!event.params.approved) {
@@ -87,7 +80,7 @@ export function handleApprovalForAll(event: ApprovalForAll): void {
     approve.IsAll = true;
   }
 
-  approve.Amouont = BigInt.fromI32(0);
+  approve.Amount = BigInt.fromI32(0);
   approve.UpdatedAt = event.block.timestamp;
   approve.save();
 }
