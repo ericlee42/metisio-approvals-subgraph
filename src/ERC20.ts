@@ -19,9 +19,9 @@ export function handleERC20Approval(event: Approval): void {
     token.save();
   }
 
-  const approveId = `ERC20Approve-${event.address.toHex()}-${
-    event.params.owner
-  }-${event.params.spender}`;
+  const approveId = `ERC20Approve-${event.address.toHex()}-${event.params.owner}-${
+    event.params.spender
+  }`;
 
   let approve = Approved.load(approveId);
   if (event.params.value.equals(BigInt.fromU32(0))) {
@@ -39,7 +39,7 @@ export function handleERC20Approval(event: Approval): void {
     approve.IsAll = false;
   }
 
-  approve.Amouont = event.params.value;
+  approve.Amount = event.params.value;
   approve.UpdatedAt = event.block.timestamp;
   approve.save();
 }

@@ -16,7 +16,7 @@ type Approved @entity {
   token: Token!
   owner: Bytes!
   spender: Bytes!
-  Amouont: BigInt!
+  Amount: BigInt!
   IsAll: Boolean!
   UpdatedAt: BigInt!
 }
